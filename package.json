@@ -1,0 +1,29 @@
+{
+  "name": "testspilot-e2e",
+  "version": "1.0.0",
+  "description": "Playwright + TypeScript E2E test suite (Page Object Model) for https://testspilot.vercel.app/",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "codegen": "playwright codegen https://testspilot.vercel.app/"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "e2e",
+    "page-object-model",
+    "testspilot"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^6.0.3"
+  }
+}
