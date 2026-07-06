@@ -1,5 +1,7 @@
 # TestPilot E2E Suite
 
+[![Playwright E2E](https://github.com/Sr-Shohan/playwrite-e2e-suite/actions/workflows/playwright.yml/badge.svg)](https://github.com/Sr-Shohan/playwrite-e2e-suite/actions/workflows/playwright.yml)
+
 Playwright + TypeScript end-to-end tests for [testspilot.vercel.app](https://testspilot.vercel.app/),
 built with a standard **Page Object Model (POM)** architecture.
 
