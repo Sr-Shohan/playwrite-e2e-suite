@@ -21,13 +21,14 @@ export default defineConfig({
     video: "retain-on-failure",
     navigationTimeout: 60_000,
     actionTimeout: 20_000,
-    permissions: ["clipboard-read", "clipboard-write"],
   },
 
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      // `clipboard-read` is a Chromium-only permission; granting it globally
+      // makes Firefox/WebKit throw "Unknown permission" at context creation.
+      use: { ...devices["Desktop Chrome"], permissions: ["clipboard-read", "clipboard-write"] },
     },
     {
       name: "firefox",
