@@ -1,5 +1,7 @@
 name: Playwright E2E
 
+run-name: "Playwright · ${{ github.event.inputs.browser || 'chromium' }} · ${{ github.event.inputs.module || 'all' }} @ ${{ github.event.inputs.branch || github.ref_name }}"
+
 on:
   push:
     branches: [main]
@@ -52,6 +54,25 @@ jobs:
         with:
           node-version: 20
           cache: npm
+
+      - name: Run summary
+        env:
+          BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
+          BROWSER: ${{ github.event.inputs.browser || 'chromium' }}
+          MODULE: ${{ github.event.inputs.module || 'all' }}
+          GREP: ${{ github.event.inputs.grep || '(none)' }}
+        run: |
+          {
+            echo "### Playwright run configuration"
+            echo ""
+            echo "| Setting | Value |"
+            echo "| --- | --- |"
+            echo "| Browser | \`${BROWSER}\` |"
+            echo "| Module | \`${MODULE}\` |"
+            echo "| Branch | \`${BRANCH}\` |"
+            echo "| Grep | \`${GREP}\` |"
+            echo "| Trigger | \`${{ github.event_name }}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Install dependencies
         run: npm ci
