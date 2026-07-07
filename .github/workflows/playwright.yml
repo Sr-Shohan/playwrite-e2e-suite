@@ -7,6 +7,14 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
+      browser:
+        description: "Which browser to run against"
+        type: choice
+        default: chromium
+        options:
+          - chromium
+          - firefox
+          - webkit
       module:
         description: "Which module/feature to run"
         type: choice
@@ -45,14 +53,17 @@ jobs:
         run: npm run typecheck
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        env:
+          BROWSER: ${{ github.event.inputs.browser || 'chromium' }}
+        run: npx playwright install --with-deps "$BROWSER"
 
       - name: Run Playwright tests
         env:
+          BROWSER: ${{ github.event.inputs.browser || 'chromium' }}
           MODULE: ${{ github.event.inputs.module || 'all' }}
           GREP: ${{ github.event.inputs.grep || '' }}
         run: |
-          ARGS=()
+          ARGS=("--project=${BROWSER}")
           if [ "$MODULE" != "all" ] && [ -n "$MODULE" ]; then
             ARGS+=("tests/e2e/${MODULE}.spec.ts")
           fi
