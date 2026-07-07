@@ -7,6 +7,11 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
+      branch:
+        description: "Branch to run the tests against"
+        type: string
+        required: false
+        default: main
       browser:
         description: "Which browser to run against"
         type: choice
@@ -39,6 +44,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -59,10 +66,12 @@ jobs:
 
       - name: Run Playwright tests
         env:
+          BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
           BROWSER: ${{ github.event.inputs.browser || 'chromium' }}
           MODULE: ${{ github.event.inputs.module || 'all' }}
           GREP: ${{ github.event.inputs.grep || '' }}
         run: |
+          echo "Branch: ${BRANCH} | Browser: ${BROWSER} | Module: ${MODULE}"
           ARGS=("--project=${BROWSER}")
           if [ "$MODULE" != "all" ] && [ -n "$MODULE" ]; then
             ARGS+=("tests/e2e/${MODULE}.spec.ts")
