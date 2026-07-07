@@ -11,7 +11,14 @@ test.describe("Skill detail page", () => {
     await expect(skillDetailPage.installCommand).toContainText(FEATURED_SKILL.installCommand);
   });
 
-  test("copy button places the install command on the clipboard", async ({ skillDetailPage }) => {
+  test("copy button places the install command on the clipboard", async ({
+    skillDetailPage,
+    browserName,
+  }) => {
+    test.skip(
+      browserName !== "chromium",
+      "Reading the clipboard requires the clipboard-read permission, which only Chromium supports."
+    );
     const clipboard = await skillDetailPage.copyInstallCommand();
     expect(clipboard).toContain(FEATURED_SKILL.installCommand);
   });
